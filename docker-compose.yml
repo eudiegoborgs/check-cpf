@@ -1,0 +1,32 @@
+version: "2.1"
+
+services:
+    mysql:
+        image: mysql:5.7.20
+        restart: always
+        ports:
+            - "3466:3306"
+        environment:
+            - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+            - "MYSQL_DATABASE=${DB_DATABASE}"
+            - "MYSQL_USER=${DB_USERNAME}"
+            - "MYSQL_PASSWORD=${DB_PASSWORD}"
+        volumes:
+            - "data:/var/lib/mysql"
+    php:
+        build: ./docker
+        ports:
+          - "3000:80"
+        environment:
+            - "APP_ENV=${APP_ENV-prod}"
+            - "DB_HOST=${DB_HOST}"
+            - "DB_PORT=${DB_PORT}"
+            - "DB_DATABASE=${DB_DATABASE}"
+            - "DB_USERNAME=${DB_USERNAME}"
+            - "DB_PASSWORD=${DB_PASSWORD}"
+        volumes:
+           - ".:/var/www/html/app"
+volumes:
+    data:
+networks:
+    main:

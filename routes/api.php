@@ -13,12 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-
-Route::get('check-cpf', 'BlackListController@checkCpf');
+Route::get('check-cpf', 'BlackListController@checkCpf')->name('check-cpf');
 Route::post('black-list', 'BlackListController@store');
 Route::get('black-list', 'BlackListController@index');
 Route::delete('black-list/{cpf?}', 'BlackListController@destroy');

@@ -16,7 +16,7 @@ class BlackListController extends Controller
     }
     public function checkCpf(Request $request)
     {
-        if (!$request->has('cpf')) {
+        if (!$request->has('cpf') || !$request->input('cpf')) {
             abort(422, 'CPF não informado em sua consulta.');
         }
 
@@ -25,20 +25,23 @@ class BlackListController extends Controller
         if (!$cpf->isValidCPF()) {
             return response()->json([
                 'status'    => 'error',
+                'state'     => 'error',
                 'message'   => 'O CPF informado é invalido.'
             ]);
         }
 
         if ($cpf->inBlackList()) {
             return response()->json([
-                'status'    => 'danger',
-                'message'   => 'O CPF informado está cadastrado em nossa black list.'
+                'status'        => 'success',
+                'state'         => 'block',
+                'message'       => 'O CPF informado está cadastrado em nossa black list.'
             ]);
         }
 
         return response()->json([
-            'status'    => 'success',
-            'message'   => 'O CPF informado não está cadastrado em nossa black list.'
+            'status'        => 'success',
+            'state'         => 'free',
+            'message'       => 'O CPF informado não está cadastrado em nossa black list.'
         ]);
     }
 
